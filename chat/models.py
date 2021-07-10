@@ -13,10 +13,24 @@ class Image(models.Model):
         return self.image_name
 
     def save_image(self):
+        '''
+        Method that saves class image t
+        '''
         self.save()
 
     def delete_image(self):
-        self.delete(self) 
+        '''
+        method that deletes specified image using image id 
+        '''
+        Image.objects. filter(id=self.id).delete()
+
+    @classmethod
+    def update_caption(cls,id,image_caption):
+        '''
+        Method that update image caption 
+        '''
+        return cls.objects.filter(id=id).update(image_caption=image_caption)
+
 
     
 
@@ -24,3 +38,11 @@ class Image(models.Model):
 class Profile(models.Model):
     profile_photo=models.ImageField(upload_to='pics',blank=True)
     bio= models.CharField(max_length=1000,blank=True,null=True)
+
+    def save_profile(self):
+        '''
+        Defines method that saves profile class model
+        '''
+        self.save()
+        
+         
