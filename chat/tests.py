@@ -13,9 +13,9 @@ class ImageTestClass(TestCase):
         self.elly=Image(image="omollo.png",image_name="omollo",image_captions="beast",profile=self.vin,likes=700,comments="Taken at peak")
         self.elly.save_image()
 
-    # def test_image_instance(self):
-    #     '''
-    #     Method that checks if image is instanciated 
-    #     '''
-    #     self.assertTrue(isinstance(self.elly,Image))
+    def test_image_instance(self):
+        '''
+        Method that checks if image is instanciated 
+        '''
+        self.assertTrue(isinstance(self.elly,Image))
 
