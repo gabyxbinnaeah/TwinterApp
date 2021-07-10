@@ -1,5 +1,5 @@
 from django.test import TestCase
-from models import Profile,Image
+from .models import Profile,Image
 # Create your tests here.
 
 class ImageTestClass(TestCase):
@@ -7,7 +7,7 @@ class ImageTestClass(TestCase):
         '''
         method that creates instance of image 
         '''
-        self.vin= Profile(profile_image="start.pgn",bio="Motivated IT geek")
+        self.vin= Profile(profile_photo="start.pgn",bio="Motivated IT geek")
         self.vin.save_profile()
 
         self.elly=Image(image="omollo.png",image_name="omollo",image_captions="beast",profile=self.vin,likes=700,comments="Taken at peak")
@@ -15,7 +15,16 @@ class ImageTestClass(TestCase):
 
     def test_image_instance(self):
         '''
-        Method that checks if image is instanciated 
+        function that checks if image is instanciated 
         '''
         self.assertTrue(isinstance(self.elly,Image))
+
+    def test_save_image(self):
+        '''
+        Method that test if image model is saved 
+        '''
+        self.elly.save_image()
+        image_list=Image.objects.all()
+        self.assertTrue(len(image_list)>0) 
+
 
