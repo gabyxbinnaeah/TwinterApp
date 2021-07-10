@@ -29,13 +29,35 @@ class ImageTestClass(TestCase):
 
     def test_image_delete(self):
         '''
-        method that checks if image is saved 
+        method that checks if image is delete_image method deletes image 
         '''
         self.elly.save_image()
         self.elly.delete_image()
         check_list=Image.objects.all()
         self.assertTrue(len(check_list)==0)
 
-        
+
+    def test_caption_update(self):
+        '''
+        method that checks if caption is updates
+        '''
+        self.elly.save_image()
+        self.elly.update_caption(self.elly.id,'gabs')
+        image_list=Image.objects.all()
+        self.assertTrue(len(image_list)==1)
+        updated_caption=Image.objects.all().first()
+        self.assertTrue(updated_caption.image_captions=='gabs') 
+
+
+
+
+class ProfileTestClass(TestCase):
+    def setUp():
+        '''
+        Method that creates instance of profile class
+        '''
+        self.vin= Profile(profile_photo="start.pgn",bio="Motivated IT geek")
+        self.vin.save_profile()
+
 
 
