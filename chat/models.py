@@ -44,5 +44,16 @@ class Profile(models.Model):
         Defines method that saves profile class model
         '''
         self.save()
-        
-         
+
+    def delete_profile(self):
+        '''
+        Method that deletes profile
+        '''
+        Profile.objects.filter(id=self.id).delete()
+
+    @classmethod
+    def update_profile_bio(cls,id,bio)
+    '''
+    Method that updates user profile bio
+    '''
+    return cls.objects.filter(id=id).upadate(bio=bio)
