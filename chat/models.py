@@ -31,13 +31,15 @@ class Image(models.Model):
         '''
         return cls.objects.filter(id=id).update(image_caption=image_caption)
 
-
+    
     
 
 
 class Profile(models.Model):
     profile_photo=models.ImageField(upload_to='pics',blank=True)
-    bio= models.CharField(max_length=1000,blank=True,null=True)
+    bio= models.TextField(max_length=1000,blank=True,null=True)
+    name= models.CharField(max_length=60,blank=True,null=True) 
+
 
     def __str__(self):
         return self.bio
@@ -47,6 +49,10 @@ class Profile(models.Model):
          Defines method that saves profile class model
         '''
         self.save()
+    @classmethod
+    def profile_details(cls):
+        details_container=cls.objects.all()
+        return details_container
 
     def delete_profile(self):
         '''
@@ -60,5 +66,6 @@ class Profile(models.Model):
         '''
          Method that updates user profile bio
         '''
-        return cls.objects.filter(id=id).upadate(bio=bio) 
+        return cls.objects.filter(id=id).update(bio=bio) 
     
+

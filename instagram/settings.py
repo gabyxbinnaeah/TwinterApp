@@ -31,14 +31,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'chat',
+    'bootstrap3',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'chat',
-    'bootstrap3',
+    
+    
 ]
 
 MIDDLEWARE = [
@@ -118,6 +120,7 @@ USE_L10N = True
 USE_TZ = True
 
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 

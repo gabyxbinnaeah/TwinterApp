@@ -83,6 +83,17 @@ class ProfileTestClass(TestCase):
         left_profiles=Profile.objects.all()
         self.assertTrue(len(left_profiles)==0) 
 
+    def test_bio_update(self):
+        '''
+        method that checks if bio can be updated
+        '''
+        self.vin.save_profile()
+        self.vin.update_profile_bio( self.vin.id,'Humble motivated coder')
+        profile_list=Profile.objects.all()
+        self.assertTrue(len(profile_list)==1)
+        new_bio=Profile.objects.all().first()
+        self.assertTrue(new_bio.bio=='Humble motivated coder')
+
 
 
 
