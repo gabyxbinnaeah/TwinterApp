@@ -27,4 +27,15 @@ class ImageTestClass(TestCase):
         image_list=Image.objects.all()
         self.assertTrue(len(image_list)>0) 
 
+    def test_image_delete(self):
+        '''
+        method that checks if image is saved 
+        '''
+        self.elly.save_image()
+        self.elly.delete_image()
+        check_list=Image.objects.all()
+        self.assertTrue(len(check_list)==0)
+
+        
+
 
