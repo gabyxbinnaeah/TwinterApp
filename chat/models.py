@@ -39,21 +39,26 @@ class Profile(models.Model):
     profile_photo=models.ImageField(upload_to='pics',blank=True)
     bio= models.CharField(max_length=1000,blank=True,null=True)
 
+    def __str__(self):
+        return self.bio
+
     def save_profile(self):
         '''
-        Defines method that saves profile class model
+         Defines method that saves profile class model
         '''
         self.save()
 
     def delete_profile(self):
         '''
-        Method that deletes profile
+         Method that deletes profile
         '''
         Profile.objects.filter(id=self.id).delete()
 
+
     @classmethod
-    def update_profile_bio(cls,id,bio)
-    '''
-    Method that updates user profile bio
-    '''
-    return cls.objects.filter(id=id).upadate(bio=bio)
+    def update_profile_bio(cls,id,bio):
+        '''
+         Method that updates user profile bio
+        '''
+        return cls.objects.filter(id=id).upadate(bio=bio) 
+    
