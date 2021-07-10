@@ -52,7 +52,7 @@ class ImageTestClass(TestCase):
 
 
 class ProfileTestClass(TestCase):
-    def setUp():
+    def setUp(self):
         '''
         Method that creates instance of profile class
         '''
@@ -68,11 +68,21 @@ class ProfileTestClass(TestCase):
 
     def test_save_profile(self):
         '''
-        Method that test is profile is being saved
+        Method that test if profile is being saved
         '''
         self.vin.save_profile()
         list_profile=Profile.objects.all()
         self.assertTrue(len(list_profile)>0) 
+
+    def test_delete_profile(self):
+        '''
+        method that checks if profile is deleted
+        '''
+        self.vin.save_profile()
+        self.vin.delete_profile()
+        left_profiles=Profile.objects.all()
+        self.assertTrue(len(left_profiles)==0) 
+
 
 
 
