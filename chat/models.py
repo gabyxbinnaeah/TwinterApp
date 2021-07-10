@@ -15,6 +15,11 @@ class Image(models.Model):
     def save_image(self):
         self.save()
 
+    def delete_image(self):
+        self.delete(self) 
+
+    
+
 
 class Profile(models.Model):
     profile_photo=models.ImageField(upload_to='pics',blank=True)
