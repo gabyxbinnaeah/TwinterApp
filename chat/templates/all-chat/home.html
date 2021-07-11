@@ -1,27 +1,113 @@
 {% extends "all-chat/base.html"%}
 {% load bootstrap3 %}
 {%block content%}
- <div class="container">
-     <h1 class="text-center">Karibu instagram Gabby</h1>
-    {% for profile_item in profile_contents%}
-     <div class="row">
-         <div class="col-md-1"></div>
-         <div class="col-md-10">
-             <div class="row">
-                 
-                 <div class="col-md-4">
-                     <div class="row" style="background-color: blueviolet;">
-                         <div class="col-md-6" style="background-color: red;"><img src="{{profile_item.profile_photo.url}}" alt="" height="150px"></div>
-                         <div class="col-md-6" style="background-color: blue;">{{profile_item.name}}</div>
-                     </div>
-                 </div>
-                 <div class="col-md-5"></div>
-                 <div class="col-md-3 bg-warning text-danger" ><button class="btn btn-primary btn-lg">Follow</button></div>
-             </div>
-         </div>
-         <div class="col-md-1"></div>
-     </div>
-    {%endfor%} 
+ <div class="container card">
+     
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-6 card" >
+            {% for image_item in image_contents %}
+            <div class="row" style="padding-top: 20px;">
+                <div class="card" style="border: 1px solid;border-radius:10px;">
+                    <div class="card-header row">
+                        <div class="col-md-1" ></div>
+                        <div class="col-md-1" style="background-color:#1d3557;border-radius:50%;height:60px;"><a href=""><img src="{{image_item.image.url}}" alt="" height="0px"></a></div>
+                        <div class="col-md-8"></div>
+                        <div class="col-md-1" style="padding-right:0px;"><a href=""><span class="glyphicon glyphicon-option-horizontal"></span></a></div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    <div class="card-body" style="background-color:#1d3557">
+                        <img src="{{image_item.image.url}}" alt="" height="200px" width="100%">
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-1"> <a href=""> <span class="glyphicon glyphicon-heart text-danger"></span></a></span></div>
+                            <div class="col-md-1"> <a href=""><span class="glyphicon glyphicon-comment"></span></a></div>
+                            <div class="col-md-1"> <a href=""><span class="glyphicon glyphicon-send"></span></a></div>
+                            <div class="col-md-7"><a href=""></a></div>
+                            <div class="col-md-1 text-center"><a href=""><span class="glyphicon glyphicon-bookmark"></span></a></div>
+                            <div class="col-md-1"><a href=""></a></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-1" style="font-weight: bold;">13 likes</div>
+                            <div class="col-md-11"></div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            
+                            <div class="col-md-1">
+                                <input type="text" id="lname" name="lname" placeholder="add comment...">
+                            </div>
+                            <div class="col-md-11"></div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+               
+            </div>
+           {%endfor%}
+            
+            
+            
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3">
+
+            <div class="row" style="padding-top:30px;padding-bottom:15 px">
+                
+                <!-- <div class="col-md-2"></div> -->
+                <div class="col-md-12" >
+                    <div class="row" style="padding-top: 15px;padding-bottom: 10px;margin-left: 10px;">
+                        <!-- <div class="col-md-1"></div> -->
+                        <div class="col-md-5">
+                            
+                            <div class="row">
+                                <div class="col-md-4" style="background-color: #1d3557;height:60px;border-radius:50%"><a href="#"><img src="{{profile_item.profile_photo.url}}" alt="" height="150px" class="img-responsive"></a></div>
+                                <div class="col-md-8" style="font-weight: bold;">
+                                    <p>{{profile_item.user}}</p>
+                                    <!-- <p>{{profile_item.bio}}</p> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5"></div>
+                        <div class="col-md-1" style="font-weight: bold;"><a href="#">Switch</a></div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-2"></div> -->
+            </div>
+            <div class="" style="padding-top:20px;padding-bottom:15px; color:grey;font-size:20px">Suggestions For You</div>
+
+
+            {% for profile_item in profile_contents%}
+            <div class="row">
+                
+                <!-- <div class="col-md-2"></div> -->
+                <div class="col-md-12" >
+                    <div class="row" style="padding-top: 15px;padding-bottom: 10px;margin-left: 10px;">
+                        <!-- <div class="col-md-1"></div> -->
+                        <div class="col-md-5">
+                            
+                            <div class="row">
+                                <div class="col-md-4" style="background-color: #1d3557;height:40px;border-radius:50%"><a href="#"><img src="{{profile_item.profile_photo.url}}" alt="" height="150px" class="img-responsive"></a></div>
+                                <div class="col-md-8" style="font-weight: bold;">
+                                    <p>{{profile_item.user}}</p>
+                                    <!-- <p>{{profile_item.bio}}</p> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5"></div>
+                        <div class="col-md-1" style="font-weight: bold;"><a href="#">Follow</a></div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-2"></div> -->
+            </div>
+            {%endfor%} 
+
+        </div>
+        <div class="col-md-1"></div>
+           
+    </div>
  </div>
 
 {%endblock%}
