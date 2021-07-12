@@ -27,7 +27,7 @@ def new_image(request):
         else:
             form=ImageForm()
 
-        return render(request, 'all-chat/posted_image.html',{"form":form})
+        return render(request, 'all-chat/new_image.html',{"form":form}) 
 
           
             
