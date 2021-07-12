@@ -45,6 +45,27 @@ def profile(request, username):
     return render(request, 'profile.html', params)
 
 
+@login_required(login_url='/accounts/login/')
+def update_profile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST,request.FILES)
+        print(form.errors)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('profileUrl')
+    else:
+        form = UploadForm()
+    return render(request,'update_profile.html',{"form":form})
+
+
+@login_required(login_url='/accounts/login/')
+def follow(request, to_follow):
+    if request.method == 'GET':
+        next_user_profile = Profile.objects.get(pk=to_follow)
+        following_list = Follow(follower=request.user.profile, following=next_user_profile)
+        following_list.save()
+        return redirect('user_profile', next_user_profile.user.username)
 
 
 
