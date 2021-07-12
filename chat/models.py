@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User 
+import cloudinary
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Image(models.Model):
-    image= models.ImageField(upload_to='pics',blank=True)
+    image = cloudinary.models.CloudinaryField('pics',null=True, blank=True)
     image_name= models.CharField(max_length=60,blank=True,null=True)
     image_captions= models.CharField(max_length=60,blank=True,null=True)
     user=models.ForeignKey('Profile',on_delete=models.CASCADE,null=True,blank=True)
@@ -34,7 +36,7 @@ class Image(models.Model):
 
     @classmethod
     def image_details(cls):
-        images_list=cls.objects.all()
+        images_list=cls.objects.all().first()
         return images_list
 
     
@@ -42,7 +44,7 @@ class Image(models.Model):
 
 
 class Profile(models.Model):
-    profile_photo=models.ImageField(upload_to='pics',blank=True)
+    profile_photo= cloudinary.models.CloudinaryField('pics',null=True, blank=True)
     bio= models.TextField(max_length=1000,blank=True,null=True)
     user= models.OneToOneField(User,related_name="profile",null=True,on_delete=models.CASCADE) 
 
@@ -57,8 +59,11 @@ class Profile(models.Model):
         self.save()
     @classmethod
     def profile_details(cls):
-        details_container=cls.objects.all()
+        details_container=cls.objects.all() 
         return details_container
+        
+        # user=currentUser
+
 
     def delete_profile(self):
         '''
@@ -83,16 +88,16 @@ class Follow(models.Model):
     def __str__(self):
         return self.follower
 
-# class Comment(models.Model):
-#     user=model.ForeignKey('Profile',related_name='comment',on_delete=CASCADE)
-#     comment=models.TextField()
-#     photo = models.ForeignKey('Image',related_name='comments',  on_delete=models.CASCADE)
+class Comment(models.Model):
+    user=models.ForeignKey('Profile',related_name='comment',on_delete=models.CASCADE)
+    comment=models.TextField()
+    photo = models.ForeignKey('Image',related_name='photoComments',  on_delete=models.CASCADE)
 
-#     class Meta:
-#         ordering=["-pk"]
+    class Meta:
+        ordering=["-pk"]
 
-#     def __str__(self):
-#         return f'{self.user.name} Image' 
+    def __str__(self):
+        return f'{self.user.name} Image' 
 
     
    
