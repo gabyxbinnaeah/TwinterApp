@@ -135,7 +135,7 @@
 <body>
     <div class="navigation">
         <div class="logo">
-          <a class="no-underline" href="#">
+          <a class="no-underline" href="{%url 'homeUrl'%}">
             𝓘𝓷𝓼𝓽𝓪𝓰𝓻𝓪𝓶 
           </a>
         </div>
@@ -180,9 +180,7 @@
                               <span class="caret"></span>
                           </a>
                     <ul class="dropdown-menu" role="menu">
-                      <li>
-                        <a href="{%url 'newsToday'%}">Home</a>
-                      </li>
+                  
                       <li>
                         <a href="/accounts/password/change">Change Password</a>
                       </li>
@@ -208,7 +206,7 @@
     
       <script>
         // double click on the heart icon
-        $(".fa-heart").dblclick(function () {
+        $(".glyphicon-heart").dblclick(function () {
         $(".notification-bubble").show(400);
         });
 

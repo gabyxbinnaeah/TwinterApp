@@ -1,0 +1,17 @@
+{% extends "all-chat/base.html"%}
+{% load bootstrap3 %}
+{% block content %}
+    <div class="make_post">
+        <h1>Make A Post</h1>
+        <form action="" method="POST">
+            {% csrf_token%}
+            <fieldset class="form-group">
+                {{form.as_p}}
+            </fieldset>
+            <div class="from-group">
+                <button class="btn btn-outline-primary" type="submit">Submit</button>
+            </div>
+        </form>
+
+    </div>
+{%endblock%}

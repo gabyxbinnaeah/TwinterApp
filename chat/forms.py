@@ -1,8 +1,8 @@
 from django import forms
 from .models import Image,Profile
-from django.conf.auth.models import User
+from django.contrib.auth.models import User
 
-class ImageFormm(forms.ModelForm):
+class ImageForm(forms.ModelForm):
     class Meta:
 
         model=Image
@@ -38,7 +38,7 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
 
         model=User
-        fields=['name','email','username']
+        fields=['email','username']
 
 
 

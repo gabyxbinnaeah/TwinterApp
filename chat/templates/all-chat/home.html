@@ -5,52 +5,53 @@
      
     <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-6 card" >
-            {% for image_item in image_contents %}
-            <div class="row" style="padding-top: 20px;">
-                <div class="card" style="border: 1px solid;border-radius:10px;">
-                    <div class="card-header row">
-                        <div class="col-md-1" ></div>
-                        <div class="col-md-1" style="background-color:#1d3557;border-radius:50%;height:60px;"><a href=""><img src="{{image_item.image.url}}" alt="" height="0px"></a></div>
-                        <div class="col-md-8"></div>
-                        <div class="col-md-1" style="padding-right:0px;"><a href=""><span class="glyphicon glyphicon-option-horizontal"></span></a></div>
-                        <div class="col-md-1"></div>
-                    </div>
-                    <div class="card-body" style="background-color:#1d3557">
-                        <img src="{{image_item.image.url}}" alt="" height="200px" width="100%">
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-md-1"> <a href=""> <span class="glyphicon glyphicon-heart text-danger"></span></a></span></div>
-                            <div class="col-md-1"> <a href=""><span class="glyphicon glyphicon-comment"></span></a></div>
-                            <div class="col-md-1"> <a href=""><span class="glyphicon glyphicon-send"></span></a></div>
-                            <div class="col-md-7"><a href=""></a></div>
-                            <div class="col-md-1 text-center"><a href=""><span class="glyphicon glyphicon-bookmark"></span></a></div>
-                            <div class="col-md-1"><a href=""></a></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-1" style="font-weight: bold;">13 likes</div>
-                            <div class="col-md-11"></div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            
-                            <div class="col-md-1">
-                                <input type="text" id="lname" name="lname" placeholder="add comment...">
-                            </div>
-                            <div class="col-md-11"></div>
-                            
-                        </div>
-
-                    </div>
+        <div class="col-md-6 card">
+            
+        {% for image_item in image_contents %}{%endfor%}
+        <div class="row" style="padding-top: 20px;">
+            <div class="card" style="border: 1px solid;border-radius:10px;">
+                <div class="card-header row">
+                    <div class="col-md-1" ></div>
+                    <div class="col-md-1" style="background-color:#1d3557;border-radius:50%;height:60px;"><a href=""><img src="{{image_item.image.url}}" alt="" height="0px"></a></div>
+                    <div class="col-md-8"></div>
+                    <div class="col-md-1" style="padding-right:0px;"><a href=""><span class="glyphicon glyphicon-option-horizontal"></span></a></div>
+                    <div class="col-md-1"></div>
                 </div>
-               
+                <div class="card-body" style="background-color:#1d3557">
+                    <img src="{{image_item.image.url}}" alt="" height="200px" width="100%">
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-1"> <a href=""> <span class="glyphicon glyphicon-heart text-danger"></span></a></span></div>
+                        <div class="col-md-1"> <a href=""><span class="glyphicon glyphicon-comment"></span></a></div>
+                        <div class="col-md-1"> <a href=""><span class="glyphicon glyphicon-send"></span></a></div>
+                        <div class="col-md-7"><a href=""></a></div>
+                        <div class="col-md-1 text-center"><a href=""><span class="glyphicon glyphicon-bookmark"></span></a></div>
+                        <div class="col-md-1"><a href=""></a></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1" style="font-weight: bold;">13 likes</div>
+                        <div class="col-md-11"></div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        
+                        <div class="col-md-1">
+                            <input type="text" id="lname" name="lname" placeholder="add comment...">
+                        </div>
+                        <div class="col-md-11"></div>
+                        
+                    </div>
+
+                </div>
             </div>
-           {%endfor%}
-            
-            
-            
+        
         </div>
+        
+           
+              
+        </div>
+
         <div class="col-md-1"></div>
         <div class="col-md-3">
 
