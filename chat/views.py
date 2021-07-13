@@ -1,15 +1,17 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import Image,Profile,Comment,Follow
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from .forms import UploadForm,ProfileForm,CommentForm,UpdateImageFormm,UpdateProfileForm,UpdateUserForm,UpdateUserProfileForm
 from django.http import HttpResponse,HttpResponseRedirect
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.template.context_processors import csrf
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from .email import send_welcome_email
+from .forms import UploadForm,ProfileForm,CommentForm,UpdateImageFormm,UpdateProfileForm,UpdateUserForm,UpdateUserProfileForm
+from .models import Image,Profile,Comment,Follow
 
-
-# Create your views here.@login_required(login_url='/accounts/login/')
+# Create your views here.
+@login_required(login_url='/accounts/login/')
 def index(request):
     images = Image.images()
     users = User.objects.exclude(id=request.user.id)
@@ -137,13 +139,3 @@ def comment(request, id):
         'comments':comments,
     }
     return render(request, 'post.html', params)
-
-
-
-          
-            
-
-
-
-
-

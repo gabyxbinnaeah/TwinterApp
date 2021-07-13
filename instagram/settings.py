@@ -15,6 +15,7 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import django_heroku 
+from django.conf.urls import url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -125,10 +126,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-# REGISTER_REDIRECT_URL = 'login'
-# LOGOUT_REDIRECT_URL = 'login/'
-# LOGIN_REDIRECT_URL = 'homeUrl'
-# LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/' 
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 # Static files (CSS, JavaScript, Images)

@@ -8,9 +8,9 @@ from django.core.exceptions import ObjectDoesNotExist
 # Create your models here.
 class Image(models.Model):
     image = cloudinary.models.CloudinaryField('pics',null=True, blank=True)
-    name = models.CharField(max_length=40)
-    caption = models.CharField(max_length=50)
-    user = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='images')
+    name = models.CharField(max_length=25,blank=True, null=True)
+    caption = models.CharField(max_length=40,blank=True, null=True)
+    user = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='images',blank=True, null=True)
     likes= models.IntegerField(default=0)
      
 
@@ -42,7 +42,7 @@ class Image(models.Model):
         return cap
 
     def __str__(self):
-        return self.image_name
+       return self.name
 
     
     
@@ -50,7 +50,7 @@ class Image(models.Model):
 
 class Profile(models.Model):
     photo = cloudinary.models.CloudinaryField('image',null=True, blank=True)
-    bio = models.CharField(max_length=255)
+    bio = models.CharField(max_length=255,blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile',null=True)
     name=models.CharField(max_length=40,blank=True,null=True)
 
@@ -115,8 +115,8 @@ class Profile(models.Model):
         return self.name
 
 class Follow(models.Model):
-    follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following')
-    followed = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='followers')
+    follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following',blank=True, null=True)
+    followed = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='followers',blank=True, null=True)
 
     def __str__(self):
         return f'{self.follower} Follow'
