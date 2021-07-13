@@ -140,6 +140,15 @@
           </a>
         </div>
         <div class="navigation-search-container">
+          <form class="navbar-form navbar-right" role="search" action="{% url 'search' %}">
+           <div class="input-group">
+             <input type="text" class="form-control d-none d-md-block" placeholder="Search Article" name="search_user"/>
+                  <i class="glyphicon glyphicon-search spinner"></i>
+           </div>
+          </form>
+        </div>
+
+        <!-- <div class="navigation-search-container">
           <i class="glyphicon glyphicon-search"></i>
           <input class="search-field" type="text" placeholder="Search">
           <div class="search-container">
@@ -149,7 +158,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="navigation-icons">
           <a href="{% url 'homeUrl' %}" class="navigation-link">
             <i class="glyphicon glyphicon-home"></i>
@@ -171,23 +180,27 @@
           </a>
         </div>
         <div class="div">
-          
-              <div class="col-sm-6 col-md-6">
-                {% if user.is_authenticated %}
+          {% if user.is_authenticated %}
+          <a href="{%url 'post' %}">
+            <span class="material-icons" style="color: black; margin-top: 9px;">
+                add_circle_outline
+            </span>
+            </a>
+              <div class="col-sm-6 col-md-6" style="display: inline-flex; margin-right: 50px;">
+                
                 <ul>
                   <li class="dropdown">
-                    <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-expanded="false">Account
-                              <span class="caret"></span>
+                    <a href="{% url 'profileUrl' user.username %}" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-expanded="false">Profile<span class="caret"></span>
                           </a>
                     <ul class="dropdown-menu" role="menu">
                       <li>
-                        <a href="{%url 'homeUrl' %}">Profile</a>
+                        <a href="{%url 'homeUrl' %}">Home</a>
                       </li>
                       <li>
-                        <a href="/accounts/password/change">Change Password</a>
+                        <a href="/accounts/password_change">Change Password</a>
                       </li>
                       <li>
-                        <a href="/logout">Logout</a>
+                        <a href="/accounts/logout">Logout</a>
                       </li>
                     </ul>
                   </li>

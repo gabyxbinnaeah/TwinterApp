@@ -17,13 +17,18 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views 
 from django.urls import include 
+from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
+from django.conf import settings
+from django_registration.backends.one_step.views import RegistrationView
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('chat.urls')),
     url(r'^accounts/', include('django_registration.backends.one_step.urls')),
     url('accounts/', include('django.contrib.auth.urls')),
-    url(r'^logout/$', views.LogoutView, {"next_page": '/'})
+    url('accounts/register/',RegistrationView.as_view(success_url='/'),name='django_registration_register'),
     
 ]
+
