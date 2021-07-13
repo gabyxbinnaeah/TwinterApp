@@ -1,0 +1,239 @@
+{% load bootstrap4%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        @import url('http://fonts.cdnfonts.com/css/billabong');
+        body {
+        background: #fafafa;
+        }
+
+        /* start header */
+
+        .navigation {
+        background-color: #ffffff;
+        height: 80px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.0975);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0px 50px;
+        box-sizing: border-box;
+        z-index: 2;
+        /* animation magic */
+        transition: all 0.4s ease-in-out;
+        -webkit-transition: all 0.4s ease-in-out;
+        -moz-transition: all 0.4s ease-in-out;
+        }
+
+        .shrink {
+        height: 50px;
+        }
+
+        .navigation .logo a {
+        position: relative;
+        color: #000000;
+        font-size: 30px;
+        font-family: "Roboto", sans-serif;
+        text-decoration: none;
+        }
+
+        .navigation-search-container {
+        position: relative;
+        }
+
+        .navigation-search-container input {
+        background-color: #fafafa;
+        padding: 3px 20px;
+        padding-left: 25px;
+        height: 30px;
+        box-sizing: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.0975);
+        border-radius: 3px;
+        font-size: 14px;
+        }
+
+        .navigation-search-container .glyphicon-search {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 11px;
+        color: rgba(0, 0, 0, 0.5);
+        }
+
+        @media only screen and (min-width: 320px) and (max-width: 650px) {
+        /* Navigation */
+        .navigation {
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+        .navigation-search-container {
+            display: none;
+        }
+        .navigation-icons {
+            display: flex;
+        }
+        }
+
+        .navigation-icons {
+        display: flex;
+        }
+
+        .navigation-search-container input:focus {
+        outline: none;
+        }
+
+        .navigation-search-container input::placeholder {
+        text-align: center;
+        }
+
+        .navigation-icons a {
+        text-decoration: none;
+        }
+
+        .navigation-link i {
+        margin-left: 30px;
+        color: black;
+        text-decoration: none;
+        font-size: 22px;
+        }
+
+        .notification-bubble-wrapper {
+        position: relative;
+        top: -30px;
+        left: 17px;
+        }
+
+        .notification-bubble {
+        position: absolute;
+        min-width: 20px;
+        min-height: 20px;
+        border-radius: 50%;
+        background: #ff2c74;
+        color: #fff;
+        text-align: center;
+        font-size: 13px;
+        padding: 5px 5px 3px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+            Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        font-weight: 500;
+        display: none;
+        }
+
+        /* end header */
+
+    </style>
+</head>
+<body>
+    <div class="navigation">
+        <div class="logo">
+          <a class="no-underline" href="{%url 'homeUrl'%}">
+            𝓘𝓷𝓼𝓽𝓪𝓰𝓻𝓪𝓶 
+          </a>
+        </div>
+        <div class="navigation-search-container">
+          <form class="navbar-form navbar-right" role="search" action="{% url 'search' %}">
+           <div class="input-group">
+             <input type="text" class="form-control d-none d-md-block" placeholder="Search Article" name="search_user"/>
+                  <i class="glyphicon glyphicon-search spinner"></i>
+           </div>
+          </form>
+        </div>
+
+        <!-- <div class="navigation-search-container">
+          <i class="glyphicon glyphicon-search"></i>
+          <input class="search-field" type="text" placeholder="Search">
+          <div class="search-container">
+            <div class="search-container-box">
+              <div class="search-results">
+      
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="navigation-icons">
+          <a href="{% url 'homeUrl' %}" class="navigation-link">
+            <i class="glyphicon glyphicon-home"></i>
+          </a>
+          <a class="navigation-link notifica">
+            <i class="glyphicon glyphicon-heart">
+              <div class="notification-bubble-wrapper">
+                <div class="notification-bubble">
+                  <span class="notifications-count">99</span>
+                </div>
+              </div>
+            </i>
+          </a>
+          <a href="#" class="navigation-link">
+            <i class="glyphicon glyphicon-user"></i>
+          </a>
+          <a href="#" id="signout" class="navigation-link">
+            <i class="glyphicon glyphicon-log-out"></i>
+          </a>
+        </div>
+        <div class="div">
+          {% if user.is_authenticated %}
+          <a href="{%url 'post' %}">
+            <span class="material-icons" style="color: black; margin-top: 9px;">
+                add_circle_outline
+            </span>
+            </a>
+              <div class="col-sm-6 col-md-6" style="display: inline-flex; margin-right: 50px;">
+                
+                <ul>
+                  <li class="dropdown">
+                    <a href="{% url 'profileUrl' user.username %}" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-expanded="false">Profile<span class="caret"></span>
+                          </a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li>
+                        <a href="{%url 'homeUrl' %}">Home</a>
+                      </li>
+                      <li>
+                        <a href="/accounts/password_change">Change Password</a>
+                      </li>
+                      <li>
+                        <a href="/accounts/logout">Logout</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+                {% else %}
+                <li>
+                  <a class='btn btn-default' href="/accounts/login">Login</a> "{% url 'login'%}"
+                </li>
+
+                {% endif %}
+              </div>
+        </div>
+      </div>
+      
+      <!-- scroll down test--->
+      <br><br><br><br>
+      <!-- scroll down test--->
+    
+      <script>
+        // double click on the heart icon
+        $(".glyphicon-heart").dblclick(function () {
+        $(".notification-bubble").show(400);
+        });
+
+        $(document).on("scroll", function () {
+        if ($(document).scrollTop() > 50) {
+            $(".navigation").addClass("shrink");
+        } else {
+            $(".navigation").removeClass("shrink");
+        }
+        });
+
+          
+      </script>
+</body>
+</html>

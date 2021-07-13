@@ -2,14 +2,14 @@ from django import forms
 from .models import Image,Profile,Comment 
 from django.contrib.auth.models import User
 
-class ImageForm(forms.ModelForm):
+class UploadForm(forms.ModelForm):
     class Meta:
 
         model=Image
-        exclude=['likes','comment','user']
+        exclude=['likes','user','name']
 
 
-class ProfileFormm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
     class Meta:
 
         model=Profile
@@ -28,7 +28,7 @@ class UpdateImageFormm(forms.ModelForm):
     class Meta:
 
         model=Image
-        exclude=['likes','comment','user']
+        exclude=['likes','user']
 
 
 class UpdateProfileForm(forms.ModelForm):
@@ -37,11 +37,7 @@ class UpdateProfileForm(forms.ModelForm):
         model=Profile
         exclude=['user']
 
-class UpdateCommentsForm(forms.ModelForm):
-    class Meta:
 
-        model=Image
-        fields=['comments']
 
 class UpdateUserForm(forms.ModelForm):
     email = forms.EmailField(max_length=255, help_text='Required.Kindly provide a valid email.')
@@ -55,7 +51,7 @@ class UpdateUserForm(forms.ModelForm):
 class UpdateUserProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['bio', 'profile_photo','name'] 
+        fields = ['bio', 'name','photo']  
 
         
 

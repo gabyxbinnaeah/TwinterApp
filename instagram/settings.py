@@ -36,7 +36,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'chat',
-    'bootstrap3',
+    'bootstrap4',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -125,8 +125,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-REGISTER_REDIRECT_URL = 'login'
-LOGOUT_REDIRECT_URL = 'login/'
+# REGISTER_REDIRECT_URL = 'login'
+# LOGOUT_REDIRECT_URL = 'login/'
+# LOGIN_REDIRECT_URL = 'homeUrl'
 # LOGIN_REDIRECT_URL = 'home'
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'

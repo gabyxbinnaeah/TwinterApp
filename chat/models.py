@@ -4,17 +4,15 @@ import cloudinary
 from cloudinary.models import CloudinaryField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.exceptions import ObjectDoesNotExist
 # Create your models here.
 class Image(models.Model):
     image = cloudinary.models.CloudinaryField('pics',null=True, blank=True)
-    image_name= models.CharField(max_length=60,blank=True,null=True)
-    image_captions= models.CharField(max_length=60,blank=True,null=True)
-    user=models.ForeignKey('Profile',on_delete=models.CASCADE,null=True,blank=True)
+    name = models.CharField(max_length=40)
+    caption = models.CharField(max_length=50)
+    user = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='images')
     likes= models.IntegerField(default=0)
-    comments=models.CharField(max_length=500 ,blank=True,null=True) 
-
-    def __str__(self):
-        return self.image_name
+     
 
     def save_image(self):
         '''
@@ -22,37 +20,40 @@ class Image(models.Model):
         '''
         self.save()
 
+    @classmethod
+    def images(cls):
+        images = cls.objects.all()
+        return images
+
+    def image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
+
     def delete_image(self):
         '''
         method that deletes specified image using image id 
         '''
-        Image.objects. filter(id=self.id).delete()
+        self.delete()
+       
 
     @classmethod
-    def update_caption(cls,id,image_caption):
-        '''
-        Method that update image caption 
-        '''
-        return cls.objects.filter(id=id).update(image_caption=image_caption)
+    def update_image(cls,old,new):
+        cap = Image.objects.filter(caption=old).update(caption=new)
+        return cap
 
-    @classmethod
-    def image_details(cls):
-        images_list=cls.objects.all().first()
-        return images_list
+    def __str__(self):
+        return self.image_name
 
     
     
 
 
 class Profile(models.Model):
-    profile_photo= cloudinary.models.CloudinaryField('pics',null=True, blank=True)
-    bio= models.TextField(max_length=1000,blank=True,null=True)
-    user= models.OneToOneField(User,related_name="profile",null=True,on_delete=models.CASCADE) 
+    photo = cloudinary.models.CloudinaryField('image',null=True, blank=True)
+    bio = models.CharField(max_length=255)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile',null=True)
     name=models.CharField(max_length=40,blank=True,null=True)
 
-
-    def __str__(self):
-        return self.name
 
     def save_profile(self):
         '''
@@ -61,16 +62,16 @@ class Profile(models.Model):
         self.save()
 
     @classmethod
-    def profile_details(cls):
-        details_container=cls.objects.all() 
-        return details_container
+    def profile(cls):
+        profiles = cls.objects.all()
+        return profiles
         
     def photo_url(self):
-        if self.profile_photo and hasattr(self.profile_photo, 'url'):
-            return self.profile_photo.url 
+        if self.photo and hasattr(self.photo, 'url'):
+            return self.photo.url
 
     @receiver(post_save, sender=User)  
-    def create_profile_user(sender, instance, created, **kwargs):
+    def create_user_profile(sender, instance, created, **kwargs):
         '''
         method that creates user profile 
         '''
@@ -82,7 +83,7 @@ class Profile(models.Model):
 
 
     @receiver(post_save, sender=User)
-    def save_profile_user(sender, instance, **kwargs):
+    def save_user_profile(sender, instance, **kwargs):
         '''
         method that saves user profile 
         '''
@@ -108,19 +109,22 @@ class Profile(models.Model):
         '''
         method that filters user profile by name
         '''
-        return cls.objects.filter(user_username_icontains=name).all()
+        return cls.objects.filter(user__username__icontains=name).all()
+
+    def __str__(self):
+        return self.name
 
 class Follow(models.Model):
-    follower=models.ForeignKey('Profile',on_delete=models.CASCADE,related_name='follower', null=True,blank=True)
-    following=models.ForeignKey('Profile',related_name='following',on_delete=models.CASCADE)
+    follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following')
+    followed = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='followers')
 
     def __str__(self):
         return f'{self.follower} Follow'
 
 class Comment(models.Model):
-    user=models.ForeignKey('Profile',related_name='comment',on_delete=models.CASCADE)
+    user = models.ForeignKey('Profile',on_delete=models.CASCADE,related_name='comment')
     comment=models.TextField()
-    photo = models.ForeignKey('Image',related_name='comment',  on_delete=models.CASCADE)
+    photo = models.ForeignKey('Image',on_delete=models.CASCADE,related_name='comment')
 
     class Meta:
         ordering=["-pk"]

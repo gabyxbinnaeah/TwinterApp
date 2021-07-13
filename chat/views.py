@@ -2,66 +2,52 @@ from django.shortcuts import render,redirect, get_object_or_404
 from .models import Image,Profile,Comment,Follow
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .forms import ImageForm,ProfileFormm,CommentForm,UpdateImageFormm,UpdateProfileForm,UpdateUserForm,UpdateCommentsForm
+from .forms import UploadForm,ProfileForm,CommentForm,UpdateImageFormm,UpdateProfileForm,UpdateUserForm,UpdateUserProfileForm
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import login, authenticate
 from django.template.context_processors import csrf
 from .email import send_welcome_email
 
 
-# Create your views here.
-@login_required(login_url='/accounts/login/')
+# Create your views here.@login_required(login_url='/accounts/login/')
 def index(request):
-    image_contents=Image.image_details()
+    images = Image.images()
     users = User.objects.exclude(id=request.user.id)
-    return render(request, 'all-chat/home.html',{"image_contents":image_contents[::1],"users":users})
+    return render(request,'index.html', {"images":images[::1],"users":users})
 
-def new_image(request):
-    
-    if request.method=='POST':
-        form=ImageForm(request.POST,request.FILES)
+def post(request):
+    if request.method == 'POST':
+        form = UploadForm(request.POST,request.FILES)
         print(form.errors)
         if form.is_valid():
-            posted_image=form.save(commit=False)
-            posted_image.user=request.user.profile
-            posted_image.save()
-
-            return redirect('homeUrl')
-
+            post = form.save(commit=False)
+            post.user = request.user.profile
+            post.save()
+            return redirect('index')
     else:
-        form=ImageForm()
-
-    return render(request, 'all-chat/new_image.html',{"form":form}) 
-
-
-# @login_required(login_url='/accounts/login/')
-# def profile(request):
-#     # currentUserId=request.user.id  currentUserId
-#     profile_contents=Profile.profile_details()
-#     return render(request, 'all-chat/home.html',{"profile_contents":profile_contents})
-
+        form = UploadForm()
+    return render(request,'post_image.html', {"form":form})
 
 @login_required(login_url='/accounts/login/')
 def profile(request, username):
     images = request.user.profile.images.all()
     print(images)
     if request.method == 'POST':
-        userform = UpdateUserForm(request.POST, instance=request.user)
-        profileForm = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if userform.is_valid() and profileForm.is_valid():
-            userform.save()
-            profileForm.save()
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        prof_form = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if user_form.is_valid() and prof_form.is_valid():
+            user_form.save()
+            prof_form.save()
             return HttpResponseRedirect(request.path_info)
     else:
-        userform = UpdateUserForm(instance=request.user)
-        profileForm = UpdateUserProfileForm(instance=request.user.profile)
+        user_form = UpdateUserForm(instance=request.user)
+        prof_form = UpdateUserProfileForm(instance=request.user.profile)
     params = {
-        'userform': userform,
-        'profileForm': profileForm,
+        'user_form': user_form,
+        'prof_form': prof_form,
         'images': images,
     }
     return render(request, 'profile.html', params)
-
 
 @login_required(login_url='/accounts/login/')
 def update_profile(request):
@@ -71,11 +57,10 @@ def update_profile(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
-            return redirect('profileUrl')
+            return redirect('profile')
     else:
         form = UploadForm()
-    return render(request,'update_profile.html',{"form":form})
-
+    return render(request,'edit_profile.html',{"form":form})
 
 @login_required(login_url='/accounts/login/')
 def search_profile(request):
@@ -90,19 +75,17 @@ def search_profile(request):
         }
         return render(request, 'results.html', params)
     else:
-        message = "Kindly make selection"
+        message = "You did not make a selection"
     return render(request, 'results.html', {'message': message})
-
-
 
 @login_required(login_url='/accounts/login/')
 def user_profile(request, username):
-    userProfile = get_object_or_404(User, username=username)
-    if request.user == userProfile:
+    user_prof = get_object_or_404(User, username=username)
+    if request.user == user_prof:
         return redirect('profile', username=request.user.username)
-    user_posts = userProfile.profile.images.all()
+    user_posts = user_prof.profile.images.all()
     
-    followers = Follow.objects.filter(followed=userProfile.profile)
+    followers = Follow.objects.filter(followed=user_prof.profile)
     follow_status = None
     for follower in followers:
         if request.user.profile == follower.follower:
@@ -110,34 +93,29 @@ def user_profile(request, username):
         else:
             follow_status = False
     params = {
-        'userProfile': userProfile,
+        'user_prof': user_prof,
         'user_posts': user_posts,
         'followers': followers,
         'follow_status': follow_status
     }
     return render(request, 'user_profile.html', params)
 
-
+@login_required(login_url='/accounts/login/')
+def unfollow(request, to_unfollow):
+    if request.method == 'GET':
+        user_two_profile = Profile.objects.get(pk=to_unfollow)
+        unfollow_d = Follow.objects.filter(follower=request.user.profile, followed=user_two_profile)
+        unfollow_d.delete()
+        return redirect('user_profile', user_two_profile.user.username)
 
 
 @login_required(login_url='/accounts/login/')
 def follow(request, to_follow):
     if request.method == 'GET':
-        next_user_profile = Profile.objects.get(pk=to_follow)
-        following_list = Follow(follower=request.user.profile, following=next_user_profile)
-        following_list.save()
-        return redirect('user_profile', next_user_profile.user.username)
-
-
-@login_required(login_url='/accounts/login/')
-def unfollow(request, to_unfollow):
-    if request.method == 'GET':
-        secondUser = Profile.objects.get(pk=to_unfollow)
-        unfollow_d = Follow.objects.filter(follower=request.user.profile, followed=secondUser)
-        unfollow_d.delete()
-        return redirect('user_profile', secondUser.user.username)
-
-
+        user_three_profile = Profile.objects.get(pk=to_follow)
+        follow_s = Follow(follower=request.user.profile, followed=user_three_profile)
+        follow_s.save()
+        return redirect('user_profile', user_three_profile.user.username)
 
 @login_required(login_url='/accounts/login/')
 def comment(request, id):
@@ -159,7 +137,6 @@ def comment(request, id):
         'comments':comments,
     }
     return render(request, 'post.html', params)
-
 
 
 
