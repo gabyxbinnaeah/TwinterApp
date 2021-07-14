@@ -128,6 +128,7 @@ USE_TZ = True
 
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/' 
+REGISTER_REDIRECT_URL = 'login'
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 # Static files (CSS, JavaScript, Images)

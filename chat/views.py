@@ -31,9 +31,9 @@ def post(request):
     return render(request,'post_image.html', {"form":form})
 
 @login_required(login_url='/accounts/login/')
-def profile(request, username):
+def profile(request,username):
     images = request.user.profile.images.all()
-    print(images)
+    print(images) 
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
         prof_form = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user.profile)

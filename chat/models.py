@@ -111,8 +111,11 @@ class Profile(models.Model):
         '''
         return cls.objects.filter(user__username__icontains=name).all()
 
+    # def __str__(self):
+    #    return str(self.name)
+
     def __str__(self):
-        return self.name
+        return str(self.name) if self.name else ''
 
 class Follow(models.Model):
     follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following',blank=True, null=True)
