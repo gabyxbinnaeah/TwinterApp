@@ -13,11 +13,17 @@ from .models import Image,Profile,Comment,Follow
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def index(request):
+    '''
+    method that displays image properties
+    '''
     images = Image.images()
     users = User.objects.exclude(id=request.user.id)
     return render(request,'index.html', {"images":images[::1],"users":users})
 
 def post(request):
+    '''
+    method that displays post 
+    '''
     if request.method == 'POST':
         form = UploadForm(request.POST,request.FILES)
         print(form.errors)
@@ -32,6 +38,9 @@ def post(request):
 
 @login_required(login_url='/accounts/login/')
 def profile_user(request,username):
+    '''
+    method that displays owner profile information
+    '''
     images = request.user.profile.images.all()
     print(images) 
     if request.method == 'POST':
@@ -53,6 +62,9 @@ def profile_user(request,username):
 
 @login_required(login_url='/accounts/login/')
 def update_user_profile(request):
+    '''
+    method that permits users to update their profile.
+    '''
     if request.method == 'POST':
         form = ProfileForm(request.POST,request.FILES)
         print(form.errors)
@@ -66,6 +78,9 @@ def update_user_profile(request):
 
 @login_required(login_url='/accounts/login/')
 def search_user_profile(request):
+    '''
+    method that displays the searched user profile.
+    '''
     if 'search_user' in request.GET and request.GET['search_user']:
         name = request.GET.get("search_user")
         results = Profile.search_profile(name)
@@ -103,24 +118,34 @@ def user_profile(request, username):
     return render(request, 'user_profile.html', params)
 
 @login_required(login_url='/accounts/login/')
-def unfollow_user(request, to_unfollow):
+def follow_user(request, to_follow):
+    '''
+    method that enable follow
+    '''
     if request.method == 'GET':
-        user_two_profile = Profile.objects.get(pk=to_unfollow)
-        unfollow_d = Follow.objects.filter(follower=request.user.profile, followed=user_two_profile)
-        unfollow_d.delete()
-        return redirect('user_profile', user_two_profile.user.username)
-
+        loyal_user = Profile.objects.get(pk=to_follow)
+        follow_s = Follow(follower=request.user.profile, followed=loyal_user)
+        follow_s.save()
+        return redirect('user_profile', loyal_user.user.username)
 
 @login_required(login_url='/accounts/login/')
-def follow_user(request, to_follow):
+def unfollow_user(request, to_unfollow):
+    '''
+    method that enable unfollow 
+    '''
     if request.method == 'GET':
-        user_three_profile = Profile.objects.get(pk=to_follow)
-        follow_s = Follow(follower=request.user.profile, followed=user_three_profile)
-        follow_s.save()
-        return redirect('user_profile', user_three_profile.user.username)
+        common_user_profile = Profile.objects.get(pk=to_unfollow)
+        unfollow_d = Follow.objects.filter(follower=request.user.profile, followed=common_user_profile)
+        unfollow_d.delete()
+        return redirect('user_profile', common_user_profile.user.username)
+
+
 
 @login_required(login_url='/accounts/login/')
 def comment(request, id):
+    '''
+    method that enable user to commet while their session is active.
+    '''
     image = get_object_or_404(Image, pk=id)
     comments = image.comment.all()
     if request.method == 'POST':
