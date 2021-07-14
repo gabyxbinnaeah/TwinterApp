@@ -31,7 +31,7 @@ def post(request):
     return render(request,'post_image.html', {"form":form})
 
 @login_required(login_url='/accounts/login/')
-def profile(request,username):
+def profile_user(request,username):
     images = request.user.profile.images.all()
     print(images) 
     if request.method == 'POST':
@@ -52,7 +52,7 @@ def profile(request,username):
     return render(request, 'profile.html', params)
 
 @login_required(login_url='/accounts/login/')
-def update_profile(request):
+def update_user_profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST,request.FILES)
         print(form.errors)
@@ -65,7 +65,7 @@ def update_profile(request):
     return render(request,'edit_profile.html',{"form":form})
 
 @login_required(login_url='/accounts/login/')
-def search_profile(request):
+def search_user_profile(request):
     if 'search_user' in request.GET and request.GET['search_user']:
         name = request.GET.get("search_user")
         results = Profile.search_profile(name)
@@ -103,7 +103,7 @@ def user_profile(request, username):
     return render(request, 'user_profile.html', params)
 
 @login_required(login_url='/accounts/login/')
-def unfollow(request, to_unfollow):
+def unfollow_user(request, to_unfollow):
     if request.method == 'GET':
         user_two_profile = Profile.objects.get(pk=to_unfollow)
         unfollow_d = Follow.objects.filter(follower=request.user.profile, followed=user_two_profile)
@@ -112,7 +112,7 @@ def unfollow(request, to_unfollow):
 
 
 @login_required(login_url='/accounts/login/')
-def follow(request, to_follow):
+def follow_user(request, to_follow):
     if request.method == 'GET':
         user_three_profile = Profile.objects.get(pk=to_follow)
         follow_s = Follow(follower=request.user.profile, followed=user_three_profile)

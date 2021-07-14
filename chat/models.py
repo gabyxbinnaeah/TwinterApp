@@ -22,10 +22,16 @@ class Image(models.Model):
 
     @classmethod
     def images(cls):
+        '''
+        Method that returns all image properties
+        '''
         images = cls.objects.all()
         return images
 
     def image_url(self):
+        '''
+        method that defines image url that connects to our database
+        '''
         if self.image and hasattr(self.image, 'url'):
             return self.image.url
 
@@ -38,6 +44,9 @@ class Image(models.Model):
 
     @classmethod
     def update_image(cls,old,new):
+        '''
+        method that updates image
+        '''
         cap = Image.objects.filter(caption=old).update(caption=new)
         return cap
 
@@ -63,6 +72,9 @@ class Profile(models.Model):
 
     @classmethod
     def profile(cls):
+        '''
+        method that queries the properties of profile class model
+        '''
         profiles = cls.objects.all()
         return profiles
         
@@ -73,7 +85,7 @@ class Profile(models.Model):
     @receiver(post_save, sender=User)  
     def create_user_profile(sender, instance, created, **kwargs):
         '''
-        method that creates user profile 
+        method that creates user profile signal
         '''
         try:
             instance.profile.save()
@@ -85,7 +97,7 @@ class Profile(models.Model):
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         '''
-        method that saves user profile 
+        method that saves user profile signal
         '''
         instance.profile.save()
 
@@ -111,9 +123,6 @@ class Profile(models.Model):
         '''
         return cls.objects.filter(user__username__icontains=name).all()
 
-    # def __str__(self):
-    #    return str(self.name)
-
     def __str__(self):
         return str(self.name) if self.name else ''
 
@@ -126,8 +135,8 @@ class Follow(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey('Profile',on_delete=models.CASCADE,related_name='comment')
-    comment=models.TextField()
     photo = models.ForeignKey('Image',on_delete=models.CASCADE,related_name='comment')
+    comment=models.TextField()
 
     class Meta:
         ordering=["-pk"]
